@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
+import { Product } from "./components/Product";
 
-function App() {
+export function App() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    request();
+  }, []);
+  const request = async () => {
+    const response = await fetch("https://fakestoreapi.com/products");
+    const data = await response.json();
+    setProducts(data);
+  };
+  const listProducts = products.map((product) => (
+    <Product key={product.id} product={product} />
+  ));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid container rowSpacing={6} spacing={2}>
+      {listProducts}
+    </Grid>
   );
 }
-
-export default App;
