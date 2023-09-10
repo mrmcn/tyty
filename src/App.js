@@ -1,23 +1,15 @@
-import { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
-import { Product } from "./components/Product";
+import { RouterProvider } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles'
+import { queryClient, router } from './routes'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { theme } from './theme'
 
 export function App() {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    request();
-  }, []);
-  const request = async () => {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const data = await response.json();
-    setProducts(data);
-  };
-  const listProducts = products.map((product) => (
-    <Product key={product.id} product={product} />
-  ));
   return (
-    <Grid container rowSpacing={6} spacing={2}>
-      {listProducts}
-    </Grid>
-  );
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
+  )
 }
