@@ -1,17 +1,21 @@
-import { redirect } from 'react-router-dom'
-import { queryKey } from '../../const'
+import { defer, redirect } from 'react-router-dom'
+import { instance } from '../../api'
+import { url } from '../../api/url'
 import { queryClient } from '../../query-client'
-import { auth, personalData } from '../../services'
+import { auth, userCart } from '../../services'
+import { queryKey } from '../../services/const'
 
-export const checkoutPageLoader = async ({ request }) => {
+export const checkoutPageLoader = ({ request }) => {
   const check = auth.check(request)
   if (check !== null) {
     return redirect('/login?' + check)
   }
-  return {
-    data: await queryClient.fetchQuery({
+
+  return defer({
+    data: queryClient.fetchQuery({
       queryKey: [queryKey.personalData],
-      queryFn: () => personalData.all(),
+      queryFn: () => instance(url.accData),
     }),
-  }
+    cart: userCart.cart(),
+  })
 }

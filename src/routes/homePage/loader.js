@@ -1,13 +1,15 @@
 import { defer } from 'react-router-dom'
-import { queryKey } from '../../const'
+import { instance } from '../../api'
+import { products } from '../../api/fake'
+import { url } from '../../api/url'
 import { queryClient } from '../../query-client'
-import { products } from '../../services'
+import { queryKey } from '../../services/const'
 
 export const homePageLoader = () => {
   return defer({
     categories: queryClient.fetchQuery({
       queryKey: [queryKey.categories],
-      queryFn: () => products.categories(),
+      queryFn: () => instance(url.categories),
       staleTime: Infinity,
     }),
     banners: queryClient.fetchQuery({

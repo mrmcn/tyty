@@ -1,7 +1,6 @@
 import { userCart } from '../../../services'
 
-export const characteristicsAction = ({ request }) => {
-  userCart.updateCart(request)
-
-  return null
+export const characteristicsAction = async ({ request }) => {
+  const formData = await request.formData()
+  return await userCart.addProduct(formData)
 }

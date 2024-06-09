@@ -7,7 +7,7 @@ import Fallback from './fallback'
 import Item from './item'
 
 export default function Products({ sx }) {
-  const { products } = useLoaderData()
+  const { categoryProducts } = useLoaderData()
   const itemList = (items) =>
     items.map((item) => (
       <Item
@@ -27,7 +27,7 @@ export default function Products({ sx }) {
         spacing={{ xs: 1, md: 2 }}
       >
         <Suspense fallback={fallbackList}>
-          <Await resolve={products}>{itemList}</Await>
+          <Await resolve={categoryProducts}>{itemList}</Await>
         </Suspense>
       </Grid>
     </Box>

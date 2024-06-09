@@ -1,10 +1,8 @@
 import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
 import Paper from '@mui/material/Paper'
 import { Suspense } from 'react'
 import { Await, useLoaderData } from 'react-router-dom'
+import Item from '../../common/item'
 import Fallback from './fallback'
 
 export default function ProductsCategories() {
@@ -33,24 +31,5 @@ export default function ProductsCategories() {
         </Suspense>
       </List>
     </Paper>
-  )
-}
-
-export function Item({ category, primary }) {
-  return (
-    <ListItem
-      disablePadding={true}
-      dense
-    >
-      <ListItemButton
-        dense
-        href={`/categories/${category}`}
-      >
-        <ListItemText
-          inset
-          primary={primary}
-        />
-      </ListItemButton>
-    </ListItem>
   )
 }

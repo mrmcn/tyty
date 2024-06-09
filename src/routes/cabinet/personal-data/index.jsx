@@ -27,7 +27,7 @@ export default function PersonalData() {
         >
           <Box
             component={fetcher.Form}
-            method='post'
+            method='put'
           >
             <IdentificationData
               isEdited={isEdited}

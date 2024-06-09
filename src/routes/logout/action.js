@@ -2,6 +2,6 @@ import { redirect } from 'react-router-dom'
 import { auth } from '../../services'
 
 export const logoutAction = () => {
-  auth.logout()
+  auth.removeUserData()
   return redirect('/')
 }

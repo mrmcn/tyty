@@ -1,20 +1,14 @@
-import { queryKey } from '../../const'
-import { queryClient } from '../../query-client'
-import { products, userCart } from '../../services'
-import { storage } from '../../services/utilities'
+import { userCart } from '../../services'
 
 export const layoutAction = async ({ request }) => {
-  if (request.method === 'PUT') {
-    const response = await queryClient.fetchQuery({
-      queryKey: [queryKey.search, request],
-      queryFn: () => products.search(request),
-    })
+  const formData = await request.formData()
 
-    return response
-  } else {
-    const newCart = await userCart.editCart(request)
-    storage.setCart(JSON.stringify(newCart))
+  if (request.method === 'DELETE') {
+    userCart.deleteProduct(formData)
 
     return null
   }
+  userCart.editQuantity(formData)
+
+  return null
 }

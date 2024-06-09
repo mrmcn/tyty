@@ -1,77 +1,75 @@
-import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
 import { nanoid } from 'nanoid'
-import { storage } from '../../../../services/utilities'
+import { useFetcher, useLoaderData } from 'react-router-dom'
+import Item from '../item'
 
 export default function CurrentOrder() {
-  const cart = JSON.parse(storage.getCart())
-
-  const itemList = cart.map((item) => (
+  const fetcher = useFetcher()
+  const { cart } = useLoaderData()
+  const sendCart = cart?.productsCart.map((product) => {
+    return { id: product.id, quantity: product.quantity }
+  })
+  if (cart === null) return <IsEmpty />
+  const itemList = cart.productsCart.map((item) => (
     <Item
       key={nanoid()}
       {...item}
     />
   ))
-  console.log(cart)
 
   return (
-    <Box>
+    <Box sx={{ m: 2 }}>
       <Typography
-        sx={{ mt: 4, mb: 2 }}
-        variant='h6'
+        variant='h4'
         component='div'
       >
-        Avatar with text and icon
+        Current order
       </Typography>
       <List dense>
         {itemList}
+        <Divider />
         <ListItem>
           <ListItemText primary='Total discount:' />
           <Typography>-{cart.totalDiscount}</Typography>
         </ListItem>
         <ListItem>
           <ListItemText primary='To pay:' />
-          <Typography>{cart.withDiscount}</Typography>
+          <Typography>{cart.totalPriceWithDiscount}</Typography>
         </ListItem>
       </List>
+      <Box
+        component={fetcher.Form}
+        method='post'
+      >
+        <Button
+          value={JSON.stringify(sendCart)}
+          type='submit'
+          name='sendCart'
+          variant='contained'
+          color='success'
+          fullWidth
+        >
+          Confirm your purchase
+        </Button>
+      </Box>
     </Box>
   )
 }
 
-function Item(item) {
+function IsEmpty() {
   return (
-    <ListItem>
-      <ListItemAvatar>
-        <Avatar
-          alt=''
-          src={item.thumbnail}
-          variant='rounded'
-          sx={{ width: 40, height: 40 }}
-        />
-      </ListItemAvatar>
-      <ListItemText primary={item.title} />
-      <Typography
-        variant={item.discountPercentage > 0 ? 'body2' : 'body1'}
-        sx={{
-          textDecoration: item.discountPercentage > 0 ? 'line-through' : null,
-        }}
-      >
-        ${item.price}
-      </Typography>
-      <Typography
-        sx={{
-          ml: 1,
-          visibility: item.stock === 0 ? 'hidden' : 'visible',
-          color: item.stock !== 0 ? 'red' : null,
-        }}
-      >
-        ${item.discountedPrice}
-      </Typography>
-    </ListItem>
+    <Typography
+      variant='h4'
+      align='center'
+      sx={{ m: 2 }}
+    >
+      Thank you for your purchase!
+    </Typography>
   )
 }

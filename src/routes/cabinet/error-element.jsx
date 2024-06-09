@@ -12,7 +12,6 @@ export function ErrorElement() {
   if (error.response.status !== 401) {
     throw error
   }
-  localStorage.removeItem('userToken')
 
   return (
     <Container maxWidth='sm'>

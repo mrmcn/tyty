@@ -1,6 +1,6 @@
 import Skeleton from '@mui/material/Skeleton'
 import { nanoid } from 'nanoid'
-import { Item } from '.'
+import Item from '../../common/item'
 
 export default function Fallback() {
   const list = Array.from(new Array(20)).map(() => (

@@ -1,17 +1,21 @@
 export const queryKey = {
   categories: 'categories',
   products: 'categoryProducts',
-  product: 'product',
-  search: 'search',
-  brands: 'brands',
+  product: 'product', // params.productId
+  search: 'search', // url.searchParams
+  brands: 'brands', // url.searchParams, params.category
   characteristic: 'characteristicList',
   personalData: 'personalData',
   account: 'account',
-  logUp: 'logUp',
-  login: 'login',
+  delAccount: 'delAccount',
+  logUp: 'logUp', // formData
+  login: 'login', // formData
+  refreshSession: 'refreshSession',
   editQuantity: 'editQuantity',
   deleteProduct: 'deleteProduct',
   banners: 'banners',
+  sendOrder: 'sendOrder', // formData
+  getOrders: 'getOrders',
 }
 
 export const fetcherKey = {

@@ -42,6 +42,7 @@ export default function IdentificationData({ isEdited, setIsEdited }) {
               type='date'
               name='birthDate'
               isEdited={isEdited}
+              InputLabelProps={{ shrink: true }}
             />
             <DataCell
               label='Gender'

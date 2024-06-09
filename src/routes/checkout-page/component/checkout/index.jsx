@@ -4,23 +4,25 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useState } from 'react'
-import { useFetcher, useLoaderData } from 'react-router-dom'
+import { Suspense, useState } from 'react'
+import {
+  Await,
+  useAsyncValue,
+  useFetcher,
+  useLoaderData,
+} from 'react-router-dom'
+import FallBack from '../../fallback'
 import { AddressInputs } from '../address-inputs'
 import { NameInputs } from '../name-inputs'
 
 export default function Checkout() {
-  const [expanded, setExpanded] = useState(false)
   const { data } = useLoaderData()
   const fetcher = useFetcher()
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
 
   return (
     <Box
       component={fetcher.Form}
-      method='post'
+      method='put'
       sx={{ m: 2 }}
     >
       <Typography
@@ -29,6 +31,24 @@ export default function Checkout() {
       >
         Check delivery details
       </Typography>
+      <Suspense fallback={<FallBack />}>
+        <Await resolve={data}>
+          <Items />
+        </Await>
+      </Suspense>
+    </Box>
+  )
+}
+
+function Items() {
+  const data = useAsyncValue()
+  const [expanded, setExpanded] = useState(false)
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+
+  return (
+    <>
       <Accordion
         expanded={expanded === 'panel1'}
         onChange={handleChange('panel1')}
@@ -78,6 +98,6 @@ export default function Checkout() {
           <AddressInputs data={data} />
         </AccordionDetails>
       </Accordion>
-    </Box>
+    </>
   )
 }

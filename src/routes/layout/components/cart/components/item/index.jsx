@@ -52,7 +52,7 @@ export default function Item({ item, fetcher }) {
               >
                 <Box
                   component={fetcher.Form}
-                  method='POST'
+                  method='PUT'
                   sx={{ display: 'flex', alignItems: 'center' }}
                 >
                   <Input

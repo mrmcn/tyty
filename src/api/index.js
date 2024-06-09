@@ -1,34 +1,17 @@
-import { instance } from './axios'
+import axios from 'axios'
+import { fakeRequest, fakeResponse } from './fake'
 import { url } from './url'
 
-const personalData = {
-  all: async () => await instance(url.accData),
-  add: async (data) => await instance.post(url.accAdd, data),
-  delAcc: async (id) => await instance.delete(url.accAction(id)),
-  putAcc: async (id, data) => await instance.put(url.accAction(id), data),
-}
+export const instance = axios.create({ baseURL: url.baseURL })
 
-const products = {
-  categoryProducts: async (category) =>
-    await instance(url.categoryProducts(category)),
-  brands: async () => await instance(url.brands),
-  categories: async () => await instance(url.categories),
-  search: async (search) => await instance(url.search(search)),
-  product: async (productId) => await instance(url.product(productId)),
-}
+instance.interceptors.request.use((config) => fakeRequest(config))
 
-const auth = {
-  login: async (data) => await instance.post(url.login, data),
-  refreshSession: async () => {
-    try {
-      const response = await instance.post(url.refreshSession, {
-        expiresInMins: 90,
-      })
-      return response
-    } catch {
-      return null
-    }
+instance.interceptors.response.use(
+  (response) => fakeResponse(response),
+  (error) => {
+    console.log('THIS IS ERROR!!!!!!!!', error)
+    // if (response.status === 401) auth.removeUserData()
+    // return null
+    // return Promise.reject(error)
   },
-}
-
-export { auth, products, personalData }
+)

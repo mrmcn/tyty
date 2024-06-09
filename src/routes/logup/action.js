@@ -1,11 +1,13 @@
-import { queryKey } from '../../const'
+import { instance } from '../../api'
+import { url } from '../../api/url'
 import { queryClient } from '../../query-client'
-import { personalData } from '../../services'
+import { queryKey } from '../../services/const'
 
 export const logUpLoader = async ({ request }) => {
+  const formData = await request.formData()
   const newAccount = await queryClient.fetchQuery({
-    queryKey: [queryKey.logUp, request],
-    queryFn: () => personalData.add(request),
+    queryKey: [queryKey.logUp, formData],
+    queryFn: () => instance.post(url.accAdd, formData),
   })
   console.log('newAccount', newAccount)
 

@@ -9,19 +9,18 @@ import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import { nanoid } from 'nanoid'
-import { useFetcher } from 'react-router-dom'
+import { useFetcher, useLoaderData } from 'react-router-dom'
 import useModalContext from '../../../../context/modal'
-import { storage } from '../../../../services/utilities'
 import BottomStack from './components/bottom-stack'
 import Item from './components/item'
 
 export default function Cart() {
+  const { cart } = useLoaderData()
   const { openCart, setOpenCart } = useModalContext()
   const fetcher = useFetcher()
-  const cart = JSON.parse(storage.getCart())
   const cartList =
     cart &&
-    cart.map((item) => (
+    cart.productsCart.map((item) => (
       <Item
         key={nanoid()}
         item={item}
@@ -38,7 +37,7 @@ export default function Cart() {
         onClick={() => setOpenCart(true)}
       >
         <Badge
-          badgeContent={cart?.length}
+          badgeContent={cart?.productsCart.length}
           color='warning'
           max={99}
         >
@@ -57,11 +56,11 @@ export default function Cart() {
           Cart
         </DialogTitle>
         <DialogContent>
-          {cart?.length > 0 ? (
+          {cart?.productsCart.length > 0 ? (
             <>
               <List aria-label='products to cart'>{cartList}</List>
               <Divider />
-              <BottomStack cart={cart} />
+              <BottomStack cart={cart.productsCart} />
             </>
           ) : (
             <Typography align='center'>cart is empty</Typography>

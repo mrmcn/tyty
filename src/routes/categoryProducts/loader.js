@@ -1,17 +1,23 @@
 import { defer } from 'react-router-dom'
-import { queryKey } from '../../const'
+import { instance } from '../../api'
+import { url as urlAPI } from '../../api/url'
 import { queryClient } from '../../query-client'
-import { products } from '../../services'
+import { queryKey } from '../../services/const'
 
-export const categoriesLoader = ({ request, params }) => {
-  return defer({
-    products: queryClient.fetchQuery({
-      queryKey: [queryKey.products, params.category],
-      queryFn: () => products.categoryProducts(params.category, request),
-    }),
-    allBrands: queryClient.fetchQuery({
-      queryKey: [queryKey.brands, params.category],
-      queryFn: () => products.brands(params.category),
-    }),
+export const categoriesLoader = async ({ request, params }) => {
+  const url = new URL(request.url)
+  const { categoryProducts, allBrands } = await queryClient.fetchQuery({
+    queryKey: [
+      queryKey.brands,
+      Object.fromEntries(url.searchParams),
+      params.category,
+    ],
+    queryFn: () =>
+      instance(urlAPI.categoryProducts, {
+        params: { params: url.searchParams, category: params.category },
+      }),
+    staleTime: 60 * 60 * 1000,
   })
+
+  return defer({ categoryProducts, allBrands })
 }

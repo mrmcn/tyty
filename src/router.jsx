@@ -4,6 +4,7 @@ import BonusAccount from './routes/cabinet/bonusAccount'
 import Correspondence from './routes/cabinet/correspondence'
 import { cabinetLoader } from './routes/cabinet/loader'
 import OrderList from './routes/cabinet/orderList'
+import { orderListLoader } from './routes/cabinet/orderList/loader'
 import PersonalData from './routes/cabinet/personal-data'
 import { personalDataAction } from './routes/cabinet/personal-data/action'
 import { personalDataLoader } from './routes/cabinet/personal-data/loader'
@@ -112,6 +113,7 @@ const router = createBrowserRouter([
               {
                 element: <OrderList />,
                 index: true,
+                loader: orderListLoader,
                 handle: { crumb: false },
               },
               {

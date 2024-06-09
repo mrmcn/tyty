@@ -15,7 +15,7 @@ import {
   useFetcher,
   useLoaderData,
 } from 'react-router-dom'
-import { fetcherKey } from '../../../../const'
+import { fetcherKey } from '../../../../services/const'
 import SupplementBack from './fallback'
 
 export default function InfoSupplement() {

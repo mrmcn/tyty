@@ -5,7 +5,7 @@ import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useFetcher } from 'react-router-dom'
-import { fetcherKey } from '../const'
+import { fetcherKey } from '../services/const'
 
 export default function PricesAndButton({ product, buttonSize, priceVariant }) {
   const fetcher = useFetcher({ key: fetcherKey.addToCart })

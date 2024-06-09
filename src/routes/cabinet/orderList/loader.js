@@ -5,16 +5,18 @@ import { queryClient } from '../../../query-client'
 import { auth } from '../../../services'
 import { queryKey } from '../../../services/const'
 
-export const personalDataLoader = ({ request }) => {
+export const orderListLoader = async ({ request }) => {
   const check = auth.check(request)
 
   if (check !== null) {
     return redirect('/login?' + check)
   }
-  return defer({
-    data: queryClient.fetchQuery({
-      queryKey: [queryKey.personalData],
-      queryFn: () => instance(url.accData),
-    }),
-  })
+
+  // return defer({
+  //   orderList: queryClient.fetchQuery({
+  //     queryKey: [queryKey.getOrders],
+  //     queryFn: () => instance(url.getOrders),
+  //   }),
+  // })
+  return null
 }

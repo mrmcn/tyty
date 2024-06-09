@@ -1,13 +1,16 @@
 import { defer } from 'react-router-dom'
-import { queryKey } from '../../const'
+import { instance } from '../../api'
+import { url as urlAPI } from '../../api/url'
 import { queryClient } from '../../query-client'
-import { products } from '../../services'
+import { queryKey } from '../../services/const'
 
-export const searchResultsLoader = async ({ request }) => {
+export const searchResultsLoader = ({ request }) => {
+  const url = new URL(request.url)
+
   return defer({
-    products: queryClient.fetchQuery({
-      queryKey: [queryKey.search, request],
-      queryFn: () => products.search(request),
+    categoryProducts: queryClient.fetchQuery({
+      queryKey: [queryKey.search, url.searchParams],
+      queryFn: () => instance(urlAPI.search, { params: url.searchParams }),
     }),
   })
 }

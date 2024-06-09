@@ -10,14 +10,12 @@ import { Form, useFetcher } from 'react-router-dom'
 
 export default function Search() {
   const [open, setOpen] = useState(false)
-  // const [value, setValue] = useState(null)
   const fetcher = useFetcher()
 
   return (
     <Box
       component={Form}
       action='/search'
-      // onSubmit={() => setValue(null)}
       sx={{
         width: 500,
         maxWidth: '100%',
@@ -28,13 +26,16 @@ export default function Search() {
         onClose={() => setOpen(false)}
         isOptionEqualToValue={(option, value) => option.title === value.title}
         getOptionLabel={(option) => option.title}
-        options={fetcher.data ?? []}
+        options={fetcher.data?.searchProduct ?? []}
         filterOptions={(x) => x}
         value={null}
         onInputChange={(e, newInputValue) => {
+          const searchParams = new URLSearchParams()
           newInputValue !== '' &&
             newInputValue !== ' ' &&
-            fetcher.submit({ search: newInputValue }, { method: 'put' })
+            searchParams.append('search', newInputValue)
+          fetcher.submit(searchParams)
+          // fetcher.submit({ search: newInputValue })
           newInputValue !== '' && setOpen(true)
         }}
         renderInput={(params) => renderInput(params, fetcher.state !== 'idle')}
